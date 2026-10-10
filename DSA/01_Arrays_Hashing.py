@@ -101,8 +101,8 @@ def maxSubArray(nums: List[int]) -> int:
     Input: nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
     Output: 6
     """
-    max_sum = float("-inf")
-    curr_sum = 0
+    max_sum: float = float("-inf")
+    curr_sum: int = 0
 
     for num in nums:
         curr_sum += num
@@ -120,8 +120,8 @@ def dailyTemperatures(temperatures: List[int]) -> List[int]:
     Output: [1, 1, 4, 2, 1, 1, 0, 0]
     """
     n = len(temperatures)
-    ans = [0] * n
-    stack = []
+    ans: List[int] = [0] * n
+    stack: List[int] = []
 
     for i, temp in enumerate(temperatures):
         while stack and temperatures[stack[-1]] < temp:
@@ -138,8 +138,8 @@ def largestRectangleArea(heights: List[int]) -> int:
     Input: heights = [2, 1, 5, 6, 2, 3]
     Output: 10
     """
-    stack = []  # (start_index, height)
-    max_area = 0
+    stack: List[tuple[int, int]] = []  # (start_index, height)
+    max_area: int = 0
 
     for i, h in enumerate(heights):
         start = i
@@ -161,7 +161,8 @@ def setZeroes(matrix: List[List[int]]) -> None:
     Input: matrix = [[1, 1, 1], [1, 0, 1], [1, 1, 1]]
     Output: [[1, 0, 1], [0, 0, 0], [1, 0, 1]]
     """
-    rows, cols = set(), set()
+    rows: set[int] = set()
+    cols: set[int] = set()
     m, n = len(matrix), len(matrix[0])
 
     for i in range(m):
@@ -202,7 +203,7 @@ class EncodeDecodeStrings:
         return ans
 
     def decode(self, s: str) -> List[str]:
-        ans = []
+        ans: list[str] = []
         length = ""
         i = 0
 
@@ -224,15 +225,15 @@ def longestConsecutive(nums: List[int]) -> int:
     Input: nums = [100, 4, 200, 1, 3, 2]
     Output: 4
     """
-    nums = set(nums)
+    num_set: set[int] = set(nums)
 
-    ans = 0
+    ans: int = 0
 
     for num in nums:
-        if num - 1 not in nums:
-            curr = 1
+        if num - 1 not in num_set:
+            curr: int = 1
 
-            while num + curr in nums:
+            while num + curr in num_set:
                 curr += 1
 
             ans = max(ans, curr)
@@ -332,7 +333,7 @@ def spiralOrder(matrix: List[List[int]]) -> List[int]:
     if not matrix or not matrix[0]:
         return []
 
-    res = []
+    res: list[int] = []
     top, bottom = 0, len(matrix) - 1
     left, right = 0, len(matrix[0]) - 1
 
@@ -393,9 +394,9 @@ def isValidSudoku(board: List[List[str]]) -> bool:
                     [".",".",".",".","8",".",".","7","9"]]
     Output: True
     """
-    rows = [set() for _ in range(9)]
-    cols = [set() for _ in range(9)]
-    boxes = [set() for _ in range(9)]
+    rows: list[set[str]] = [set() for _ in range(9)]
+    cols: list[set[str]] = [set() for _ in range(9)]
+    boxes: list[set[str]] = [set() for _ in range(9)]
 
     for r in range(9):
         for c in range(9):

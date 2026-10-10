@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, List
 
 
 def binarySearch(nums: List[int], target: int) -> int:
@@ -215,11 +215,11 @@ def leastInterval(tasks: List[str], n: int) -> int:
     Input: tasks = ["A", "A", "A", "B", "B", "B"], n = 2
     Output: 8
     """
-    freq = {}
+    freq: Dict[str, int] = {}
     for task in tasks:
         freq[task] = freq.get(task, 0) + 1
-    max_freq = max(freq.values())
-    max_freq_count = sum(1 for count in freq.values() if count == max_freq)
+    max_freq: int = max(freq.values())
+    max_freq_count: int = sum(1 for count in freq.values() if count == max_freq)
 
     return max(len(tasks), (max_freq - 1) * (n + 1) + max_freq_count)
 

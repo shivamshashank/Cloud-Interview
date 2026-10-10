@@ -1,3 +1,6 @@
+from typing import List
+
+
 def find_plate(n: int) -> str:  # Example: n = 1_000_000
     for letter_count in range(6):  # Try 0, 1, 2, 3, 4, or 5 letters
 
@@ -33,7 +36,7 @@ def find_plate(n: int) -> str:  # Example: n = 1_000_000
         letter_value = n // numbers_per_suffix
         # 640,000 // 1,000 = 640
 
-        letters = []  # We will build the letters here
+        letters: List[str] = []  # We will build the letters here
 
         for _ in range(letter_count):  # Run 2 times because letter_count = 2
 
@@ -71,7 +74,7 @@ def find_plate(n: int) -> str:  # Example: n = 1_000_000
     raise ValueError("Number is too large")  # n is beyond ZZZZZ
 
 
-def minimum_water(matrix, a):  # Example: 4 × 4 matrix, a = 2
+def minimum_water(matrix: List[List[int]], a: int) -> float:  # Example: 4 × 4 matrix, a = 2
     m = len(matrix)
     # Number of rows = 4
 
@@ -95,18 +98,18 @@ def minimum_water(matrix, a):  # Example: 4 × 4 matrix, a = 2
             # [1+3, 2+4, 8+7, 9+6]
             # [4, 6, 15, 15]
 
-    answer = float("inf")
+    answer: float = float("inf")
     # answer = infinity
 
     # Possible top rows: 0, 1, 2
     for top in range(m - a + 1):
 
-        current_sum = sum(col_sums[:a])
+        current_sum: int = sum(col_sums[:a])
         # top = 0: 4 + 6   = 10
         # top = 1: 12 + 12 = 24
         # top = 2: 16 + 14 = 30
 
-        answer = min(answer, current_sum)
+        answer: float = min(answer, current_sum)
         # top = 0: min(infinity, 10) = 10
         # top = 1: min(10, 24) = 10
         # top = 2: min(10, 30) = 10
@@ -132,7 +135,7 @@ def minimum_water(matrix, a):  # Example: 4 × 4 matrix, a = 2
             # right = 2: 30 - 16 + 4 = 18
             # right = 3: 18 - 14 + 6 = 10
 
-            answer = min(answer, current_sum)
+            answer: float = min(answer, current_sum)
             # Keep the smallest sum found so far
 
         if top + a < m:

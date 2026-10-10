@@ -1,5 +1,5 @@
 import heapq
-from typing import List
+from typing import List, Tuple
 
 
 class Interval:
@@ -15,7 +15,7 @@ def mergeIntervals(intervals: List[List[int]]) -> List[List[int]]:
     """
     intervals.sort(key=lambda x: x[0])
 
-    ans = []
+    ans: List[List[int]] = []
 
     for interval in intervals:
         if len(ans) == 0 or ans[-1][1] < interval[0]:
@@ -32,8 +32,8 @@ def eraseOverlapIntervals(intervals: List[List[int]]) -> int:
     Output: 1
     """
     intervals.sort(key=lambda x: x[0])
-    ans = 0
-    prevEnd = intervals[0][1]
+    ans: int = 0
+    prevEnd: int = intervals[0][1]
 
     for start, end in intervals[1:]:
         if start >= prevEnd:
@@ -52,7 +52,7 @@ def insertInterval(
     Input: intervals = [[1, 3], [6, 9]], newInterval = [2, 5]
     Output: [[1, 5], [6, 9]]
     """
-    ans = []
+    ans: List[List[int]] = []
 
     for i, interval in enumerate(intervals):
         if newInterval[1] < interval[0]:
@@ -80,7 +80,7 @@ def minMeetingRooms(intervals: List[List[int]]) -> int:
         return 0
 
     intervals.sort(key=lambda x: x[0])
-    heap = []  # Min-heap of end times
+    heap: List[int] = []  # Min-heap of end times
 
     for start, end in intervals:
         if heap and heap[0] <= start:
@@ -95,7 +95,7 @@ def employeeFreeTime(schedule: List[List[List[int]]]) -> List[List[int]]:
     Input: schedule = [[[1, 2], [5, 6]], [[1, 3]], [[4, 10]]]
     Output: [[3, 4]]
     """
-    all_intervals = []
+    all_intervals: List[Tuple[int, int]] = []
     for emp in schedule:
         for interval in emp:
             if isinstance(interval, Interval):
@@ -105,8 +105,8 @@ def employeeFreeTime(schedule: List[List[List[int]]]) -> List[List[int]]:
 
     all_intervals.sort(key=lambda x: x[0])
 
-    ans = []
-    prev_end = all_intervals[0][1]
+    ans: List[List[int]] = []
+    prev_end: int = all_intervals[0][1]
 
     for start, end in all_intervals[1:]:
         if start > prev_end:

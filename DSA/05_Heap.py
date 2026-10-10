@@ -1,10 +1,11 @@
 from collections import Counter
 import heapq
+from typing import Dict, Tuple
 from typing_extensions import List
 
 
 class ListNode:
-    def __init__(self, val=0, next=None):
+    def __init__(self, val: int = 0, next: ListNode | None = None):
         self.val = val
         self.next = next
 
@@ -14,7 +15,7 @@ def findKthLargestElement(nums: List[int], k: int) -> int:
     Input: nums = [3, 2, 1, 5, 6, 4], k = 2
     Output: 5
     """
-    heap = []
+    heap: List[int] = []
 
     for num in nums:
         if len(heap) == k:
@@ -32,11 +33,11 @@ def topKFrequentElements(nums: List[int], k: int) -> List[int]:
     Input: nums = [1, 1, 1, 2, 2, 3], k = 2
     Output: [1, 2]
     """
-    heap = []
+    heap: List[Tuple[int, int]] = []
 
-    freq = Counter(nums)
+    freq: Dict[int, int] = Counter(nums)
 
-    ans = []
+    ans: List[int] = []
 
     for num, count in freq.items():
         if len(heap) == k:
@@ -53,26 +54,31 @@ def topKFrequentElements(nums: List[int], k: int) -> List[int]:
     return ans
 
 
-def mergeKSortedLists(lists: List[List[int]]) -> List[int]:
+def mergeKSortedLists(lists: List[ListNode | None]) -> List[int]:
     """
     Input: lists = [[1, 4, 5], [1, 3, 4], [2, 6]]
     Output: [1, 1, 2, 3, 4, 4, 5, 6]
     """
-    heap = []
+    heap: List[int] = []
 
-    for l in lists:
-        while l:
-            heapq.heappush(heap, l.val)
-            l = l.next
+    for node in lists:
+        while node:
+            heapq.heappush(heap, node.val)
+            node = node.next
 
     dummy = ListNode(0)
-    ans = dummy
+    ans: ListNode = dummy
 
     while heap:
         dummy.next = ListNode(heapq.heappop(heap))
         dummy = dummy.next
 
-    return ans.next
+    result: List[int] = []
+    node = ans.next
+    while node:
+        result.append(node.val)
+        node = node.next
+    return result
 
 
 class MedianFinder:
@@ -82,8 +88,8 @@ class MedianFinder:
     """
 
     def __init__(self):
-        self.small = []  # max heap
-        self.large = []  # min heap
+        self.small: List[int] = []  # max heap
+        self.large: List[int] = []  # min heap
 
     def addNum(self, num: int) -> None:
         if len(self.small) == 0:

@@ -19,6 +19,8 @@ def twoSum(nums: List[int], target: int) -> List[int]:
             s += 1
         else:
             return [s + 1, e + 1]
+    
+    return []
 
 
 def removeDuplicates(nums: List[int]) -> int:
@@ -44,7 +46,7 @@ def threeSum(nums: List[int]) -> List[List[int]]:
     nums.sort()
     n = len(nums)
 
-    ans = []
+    ans: List[List[int]] = []
 
     for i in range(n - 2):
         if i > 0 and nums[i] == nums[i - 1]:
@@ -80,7 +82,7 @@ def fourSum(nums: List[int], target: int) -> List[List[int]]:
     nums.sort()
     n = len(nums)
     
-    ans = []
+    ans: List[List[int]] = []
 
     for i in range(n - 3):
         if i > 0 and nums[i] == nums[i - 1]:
@@ -117,12 +119,12 @@ def findMaxAverage(nums: List[int], k: int) -> float:
     Input: nums = [1, 12, -5, -6, 50, 3], k = 4
     Output: 12.75
     """
-    curr = sum(nums[:k])
-    ans = curr
+    curr: int = sum(nums[:k])
+    ans: int = curr
 
     for i in range(k, len(nums)):
-        curr = curr + nums[i] - nums[i - k]
-        ans = max(ans, curr)
+        curr: int = curr + nums[i] - nums[i - k]
+        ans: int = max(ans, curr)
 
     return ans / k
 
@@ -132,9 +134,9 @@ def lengthOfLongestSubstring(s: str) -> int:
     Input: s = "abcabcbb"
     Output: 3
     """
-    seen = set()
-    left = 0
-    ans = 0
+    seen: set[str] = set()
+    left: int = 0
+    ans: int = 0
 
     for right, ch in enumerate(s):
         while ch in seen:
@@ -142,7 +144,7 @@ def lengthOfLongestSubstring(s: str) -> int:
             left += 1
 
         seen.add(ch)
-        ans = max(ans, right - left + 1)
+        ans: int = max(ans, right - left + 1)
 
     return ans
 
@@ -152,9 +154,9 @@ def characterReplacement(s: str, k: int) -> int:
     Input: s = "ABAB", k = 2
     Output: 4
     """
-    freq = [0] * 26
-    ans = 0
-    l = 0
+    freq: List[int] = [0] * 26
+    ans: int = 0
+    l: int = 0
 
     for i, ch in enumerate(s):
         freq[ord(ch) - ord("A")] += 1
@@ -163,7 +165,7 @@ def characterReplacement(s: str, k: int) -> int:
             freq[ord(s[l]) - ord("A")] -= 1
             l += 1
 
-        ans = max(ans, i - l + 1)
+        ans: int = max(ans, i - l + 1)
 
     return ans
 
@@ -173,8 +175,8 @@ def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
     Input: nums = [1, 3, -1, -3, 5, 3, 6, 7], k = 3
     Output: [3, 3, 5, 5, 6, 7]
     """
-    dq = deque()  # stores indices
-    ans = []
+    dq: deque[int] = deque()  # stores indices
+    ans: List[int] = []
 
     for i, num in enumerate(nums):
         # 1. Maintain monotonic decreasing property
