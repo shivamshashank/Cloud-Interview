@@ -4,43 +4,47 @@ import random
 
 
 class Node:
-    def __init__(self, key=0, value=0):
-        self.key = key
-        self.value = value
-        self.prev = None
-        self.next = None
+    def __init__(self, key: int = 0, value: int = 0) -> None:
+        self.key: int = key
+        self.value: int = value
+        self.prev: Node | None = None
+        self.next: Node | None = None
 
 
-# TODO -> Hard -> Design Pattern + Doubly Linked List + Hash Map
+# Doubly linked list + hash map
 class LRUCache:
     """
     Input: ["LRUCache", "put", "put", "get", "put", "get", "put", "get", "get", "get"], [[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]
     Output: [None, None, None, 1, None, -1, None, -1, 3, 4]
     """
 
-    def __init__(self, capacity: int):
-        self.capacity = capacity
-        self.cache = {}
+    def __init__(self, capacity: int) -> None:
+        self.capacity: int = capacity
+        self.cache: dict[int, Node] = {}
 
         # Dummy nodes
-        self.left = Node()  # LRU side
-        self.right = Node()  # MRU side
+        self.left: Node = Node()  # LRU side
+        self.right: Node = Node()  # MRU side
 
         self.left.next = self.right
         self.right.prev = self.left
 
     # Remove node from linked list
-    def remove(self, node):
-        previous = node.prev
-        nextNode = node.next
+    def remove(self, node: Node) -> None:
+        previous: Node | None = node.prev
+        nextNode: Node | None = node.next
 
+        if previous is None or nextNode is None:
+            raise RuntimeError('Cannot unlink a node without both neighbors')
         previous.next = nextNode
         nextNode.prev = previous
 
     # Add node before right (MRU position)
-    def insert(self, node):
-        previous = self.right.prev
+    def insert(self, node: Node) -> None:
+        previous: Node | None = self.right.prev
 
+        if previous is None:
+            raise RuntimeError('Right sentinel has no predecessor')
         previous.next = node
         node.prev = previous
 
@@ -51,7 +55,7 @@ class LRUCache:
         if key not in self.cache:
             return -1
 
-        node = self.cache[key]
+        node: Node = self.cache[key]
 
         # Move to MRU position
         self.remove(node)
@@ -66,7 +70,7 @@ class LRUCache:
             self.remove(self.cache[key])
 
         # Create/update node
-        node = Node(key, value)
+        node: Node = Node(key, value)
         self.cache[key] = node
 
         # Add as most recently used
@@ -76,8 +80,10 @@ class LRUCache:
         if len(self.cache) > self.capacity:
 
             # First real node = LRU
-            lru = self.left.next
+            lru: Node | None = self.left.next
 
+            if lru is None or lru is self.right:
+                raise RuntimeError('Cache eviction has no data node')
             self.remove(lru)
             del self.cache[lru.key]
 
@@ -88,7 +94,7 @@ class TimeMap:
     Output: [None, None, "bar", "bar", None, "bar2", "bar2"]
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.store: dict[str, List[Tuple[int, str]]] = defaultdict(list)
 
     def set(self, key: str, value: str, timestamp: int) -> None:
@@ -96,14 +102,14 @@ class TimeMap:
 
     def get(self, key: str, timestamp: int) -> str:
         if key in self.store:
-            ans = ""
-            curr = self.store[key]
+            ans: str = ""
+            curr: list[tuple[int, str]] = self.store[key]
 
-            s = 0
-            e = len(curr) - 1
+            s: int = 0
+            e: int = len(curr) - 1
 
             while s <= e:
-                mid = s + (e - s) // 2
+                mid: int = s + (e - s) // 2
 
                 # timestamp at mid
                 if curr[mid][0] <= timestamp:
@@ -118,34 +124,35 @@ class TimeMap:
 
 
 class RandomizedSet:
-    """
-    Input: ["RandomizedSet", "insert", "remove", "insert", "getRandom", "remove", "insert", "getRandom"], [[], [1], [2], [2], [], [1], [2], []]
-    Output: [None, True, False, True, 2, True, False, 2]
-    """
+    """LC 380. Average O(1) insert, remove and uniformly random getRandom.
 
-    def __init__(self):
-        self.store: Set[int] = set()
+    insert(1) -> True; insert(1) -> False; remove(1) -> True.
+    getRandom requires a nonempty set. Storage: O(n).
+    """
+    def __init__(self) -> None:
+        self.values: List[int] = []
+        self.positions: Dict[int, int] = {}
 
     def insert(self, val: int) -> bool:
-        if val in self.store:
+        if val in self.positions:
             return False
-
-        self.store.add(val)
-
+        self.positions[val] = len(self.values)
+        self.values.append(val)
         return True
 
     def remove(self, val: int) -> bool:
-        if val not in self.store:
+        if val not in self.positions:
             return False
-
-        self.store.remove(val)
-
+        index: int = self.positions[val]
+        last: int = self.values[-1]
+        self.values[index] = last
+        self.positions[last] = index
+        self.values.pop()
+        del self.positions[val]
         return True
 
     def getRandom(self) -> int:
-        randIndex = random.randint(0, len(self.store) - 1)
-
-        return list(self.store)[randIndex]
+        return random.choice(self.values)
 
 
 # """
@@ -157,18 +164,21 @@ class NestedInteger:
         """
         @return True if this NestedInteger holds a single integer, rather than a nested list.
         """
+        raise NotImplementedError("provided by the online judge")
 
-    def getInteger(self) -> int:
+    def getInteger(self) -> int | None:
         """
         @return the single integer that this NestedInteger holds, if it holds a single integer
         Return None if this NestedInteger holds a nested list
         """
+        raise NotImplementedError("provided by the online judge")
 
-    def getList(self) -> List[NestedInteger]:
+    def getList(self) -> List[NestedInteger] | None:
         """
         @return the nested list that this NestedInteger holds, if it holds a nested list
         Return None if this NestedInteger holds a single integer
         """
+        raise NotImplementedError("provided by the online judge")
 
 
 class NestedIterator:
@@ -177,15 +187,21 @@ class NestedIterator:
     Output: [1, 1, 2, 1, 1]
     """
 
-    def __init__(self, nestedList: List[NestedInteger]):
+    def __init__(self, nestedList: List[NestedInteger]) -> None:
         self.stack: List[int] = []
 
         def dfs(nestedList: List[NestedInteger]) -> None:
             for nL in reversed(nestedList):
                 if nL.isInteger():
-                    self.stack.append(nL.getInteger())
+                    value: int | None = nL.getInteger()
+                    if value is None:
+                        raise RuntimeError('Integer-valued entry did not provide an integer')
+                    self.stack.append(value)
                 else:
-                    dfs(nL.getList())
+                    children: list[NestedInteger] | None = nL.getList()
+                    if children is None:
+                        raise RuntimeError('List-valued entry did not provide a list')
+                    dfs(children)
 
         dfs(nestedList)
 
@@ -193,7 +209,7 @@ class NestedIterator:
         return self.stack.pop()
 
     def hasNext(self) -> bool:
-        return self.stack
+        return bool(self.stack)
 
 
 # Your NestedIterator object will be instantiated and called as such:
@@ -210,7 +226,7 @@ class Logger:
     Output: [None, True, True, False, False, False, True]
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.msg_to_time: Dict[str, int] = {}
 
     def shouldPrintMessage(self, timestamp: int, message: str) -> bool:
@@ -232,11 +248,12 @@ class HitCounter:
     Output: [None, None, None, None, 3, None, 4, 3]
     """
 
-    def __init__(self):
-        self.hits = deque()  # stores [timestamp, count]
-        self.total = 0
+    def __init__(self) -> None:
+        self.hits: deque[list[int]] = deque()  # stores [timestamp, count]
+        self.total: int = 0
 
     def hit(self, timestamp: int) -> None:
+        self.getHits(timestamp)
         if self.hits and self.hits[-1][0] == timestamp:
             self.hits[-1][1] += 1
         else:
@@ -245,6 +262,7 @@ class HitCounter:
 
     def getHits(self, timestamp: int) -> int:
         while self.hits and self.hits[0][0] <= timestamp - 300:
+            count: int
             _, count = self.hits.popleft()
             self.total -= count
         return self.total

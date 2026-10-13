@@ -6,10 +6,12 @@ def binarySearch(nums: List[int], target: int) -> int:
     Input: nums = [-1, 0, 3, 5, 9, 12], target = 9
     Output: 4
     """
+    s: int
+    e: int
     s, e = 0, len(nums) - 1
 
     while s <= e:
-        mid = s + (e - s) // 2
+        mid: int = s + (e - s) // 2
 
         if nums[mid] > target:
             e = mid - 1
@@ -28,11 +30,13 @@ def searchRange(nums: List[int], target: int) -> List[int]:
     """
 
     def binarySearch(position: str) -> int:
+        s: int
+        e: int
         s, e = 0, len(nums) - 1
-        index = -1
+        index: int = -1
 
         while s <= e:
-            mid = s + (e - s) // 2
+            mid: int = s + (e - s) // 2
 
             if nums[mid] > target:
                 e = mid - 1
@@ -56,13 +60,13 @@ def minEatingSpeed(piles: List[int], h: int) -> int:
     Input: piles = [3, 6, 7, 11], h = 8
     Output: 4
     """
-    s = 1
-    e = max(piles)
+    s: int = 1
+    e: int = max(piles)
 
     while s <= e:
-        mid = s + (e - s) // 2
+        mid: int = s + (e - s) // 2
 
-        hours = 0
+        hours: int = 0
 
         for p in piles:
             hours += p // mid
@@ -82,10 +86,12 @@ def searchInRotatedSortedArray(nums: List[int], target: int) -> int:
     Input: nums = [4, 5, 6, 7, 0, 1, 2], target = 0
     Output: 4
     """
+    s: int
+    e: int
     s, e = 0, len(nums) - 1
 
     while s <= e:
-        mid = s + (e - s) // 2
+        mid: int = s + (e - s) // 2
 
         if nums[mid] == target:
             return mid
@@ -111,10 +117,12 @@ def findPeakElement(nums: List[int]) -> int:
     Input: nums = [1, 2, 3, 1]
     Output: 2
     """
+    s: int
+    e: int
     s, e = 0, len(nums) - 1
 
     while s <= e:
-        mid = s + (e - s) // 2
+        mid: int = s + (e - s) // 2
 
         if (mid == 0 or nums[mid] > nums[mid - 1]) and (
             mid == len(nums) - 1 or nums[mid] > nums[mid + 1]
@@ -136,12 +144,16 @@ def searchMatrix(matrix: List[List[int]], target: int) -> bool:
     if not matrix or not matrix[0]:
         return False
 
+    m: int
+    n: int
     m, n = len(matrix), len(matrix[0])
+    s: int
+    e: int
     s, e = 0, m * n - 1
 
     while s <= e:
-        mid = s + (e - s) // 2
-        mid_val = matrix[mid // n][mid % n]
+        mid: int = s + (e - s) // 2
+        mid_val: int = matrix[mid // n][mid % n]
 
         if mid_val == target:
             return True
@@ -165,7 +177,11 @@ def searchMatrixII(matrix: List[List[int]], target: int) -> bool:
     if not matrix or not matrix[0]:
         return False
 
+    m: int
+    n: int
     m, n = len(matrix), len(matrix[0])
+    r: int
+    c: int
     r, c = 0, n - 1
 
     while r < m and c >= 0:
@@ -184,7 +200,7 @@ def canJump(nums: List[int]) -> bool:
     Input: nums = [2, 3, 1, 1, 4]
     Output: True
     """
-    max_reach = 0
+    max_reach: int = 0
     for i, num in enumerate(nums):
         if i > max_reach:
             return False
@@ -197,9 +213,9 @@ def jump(nums: List[int]) -> int:
     Input: nums = [2, 3, 1, 1, 4]
     Output: 2
     """
-    jumps = 0
-    curr_end = 0
-    farthest = 0
+    jumps: int = 0
+    curr_end: int = 0
+    farthest: int = 0
 
     for i in range(len(nums) - 1):
         farthest = max(farthest, i + nums[i])
@@ -232,8 +248,8 @@ def canCompleteCircuit(gas: List[int], cost: List[int]) -> int:
     if sum(gas) < sum(cost):
         return -1
 
-    curr_tank = 0
-    start_index = 0
+    curr_tank: int = 0
+    start_index: int = 0
 
     for i in range(len(gas)):
         curr_tank += gas[i] - cost[i]

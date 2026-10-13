@@ -7,11 +7,11 @@ def bit_difference(a: int, b: int) -> int:
     20 = 10100
     """
 
-    count = 0
+    count: int = 0
 
     while a > 0 or b > 0:
-        bit_a = a % 2
-        bit_b = b % 2
+        bit_a: int = a % 2
+        bit_b: int = b % 2
 
         if bit_a != bit_b:
             count += 1

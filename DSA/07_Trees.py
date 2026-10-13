@@ -8,25 +8,30 @@ class TreeNode:
     def __init__(
         self,
         val: int = 0,
-        left: Optional["TreeNode"] = None,
-        right: Optional["TreeNode"] = None,
-    ):
-        self.val = val
-        self.left = left
-        self.right = right
+        left: Optional[TreeNode] = None,
+        right: Optional[TreeNode] = None,
+    ) -> None:
+        self.val: int = val
+        self.left: TreeNode | None = left
+        self.right: TreeNode | None = right
 
 
-def inorder(root: Optional[TreeNode]) -> None:
+def inorder(root: Optional[TreeNode]) -> List[int]:
+    """LC 94. Input: [1, None, 2, 3]. Output: [1, 3, 2].
+
+    Iterative traversal: O(n) time and O(h) stack space, excluding output.
     """
-    Input: root = [1, None, 2, 3]
-    Output: Prints: 1, 3, 2
-    """
-    if root is None:
-        return
-
-    inorder(root.left)
-    print(root.val)
-    inorder(root.right)
+    result: list[int]
+    stack: list[TreeNode]
+    result, stack = [], []
+    while root or stack:
+        while root:
+            stack.append(root)
+            root = root.left
+        root = stack.pop()
+        result.append(root.val)
+        root = root.right
+    return result
 
 
 def levelOrder(root: Optional[TreeNode]) -> List[List[int]]:
@@ -37,15 +42,15 @@ def levelOrder(root: Optional[TreeNode]) -> List[List[int]]:
     if root is None:
         return []
 
-    ans = []
+    ans: list[list[int]] = []
 
-    queue = deque([root])
+    queue: deque[TreeNode] = deque([root])
 
     while queue:
-        level = []
+        level: list[int] = []
 
         for i in range(len(queue)):
-            node = queue.popleft()
+            node: TreeNode = queue.popleft()
 
             level.append(node.val)
 
@@ -80,7 +85,11 @@ def diameterOfBinaryTree(root: Optional[TreeNode]) -> int:
         if root is None:
             return (0, 0)
 
+        leftHeight: int
+        leftDiameter: int
         leftHeight, leftDiameter = dfs(root.left)
+        rightHeight: int
+        rightDiameter: int
         rightHeight, rightDiameter = dfs(root.right)
 
         return (
@@ -113,7 +122,7 @@ def isValidBST(root: Optional[TreeNode]) -> bool:
     Output: True
     """
 
-    def dfs(root: Optional[TreeNode], left: int, right: int) -> bool:
+    def dfs(root: Optional[TreeNode], left: float, right: float) -> bool:
         if root is None:
             return True
 
@@ -151,22 +160,26 @@ def lowestCommonAncestorBST(root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNod
     Output: 6
     """
     if p.val < root.val and q.val < root.val:
+        if root.left is None:
+            raise ValueError("targets must exist in the BST")
         return lowestCommonAncestorBST(root.left, p, q)
     if p.val > root.val and q.val > root.val:
+        if root.right is None:
+            raise ValueError("targets must exist in the BST")
         return lowestCommonAncestorBST(root.right, p, q)
     return root
 
 
-def lowestCommonAncestorBT(root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+def lowestCommonAncestorBT(root: TreeNode | None, p: TreeNode, q: TreeNode) -> TreeNode | None:
     """
     Input: root = [3, 5, 1, 6, 2, 0, 8, None, None, 7, 4], p = 5, q = 1
     Output: 3
     """
-    if root == p or root == q:
+    if root is None or root == p or root == q:
         return root
 
-    left = lowestCommonAncestorBT(root.left, p, q)
-    right = lowestCommonAncestorBT(root.right, p, q)
+    left: TreeNode | None = lowestCommonAncestorBT(root.left, p, q)
+    right: TreeNode | None = lowestCommonAncestorBT(root.right, p, q)
 
     if left and right:
         return root
@@ -179,13 +192,13 @@ def binaryTreePaths(root: Optional[TreeNode]) -> List[str]:
     Input: root = [1, 2, 3, None, 5]
     Output: ["1->2->5", "1->3"]
     """
-    ans = []
+    ans: list[str] = []
 
-    def dfs(root: Optional[TreeNode], curr: List[int]) -> None:
+    def dfs(root: Optional[TreeNode], curr: List[str]) -> None:
         if root is None:
             return
 
-        curr += [root.val]
+        curr = curr + [str(root.val)]
 
         if root.left is None and root.right is None:
             ans.append("->".join(curr))
@@ -223,7 +236,7 @@ def kthSmallest(root: Optional[TreeNode], k: int) -> int:
     Input: root = [3, 1, 4, None, 2], k = 1
     Output: 1
     """
-    ans = []
+    ans: list[int] = []
 
     def inorder(root: Optional[TreeNode]) -> None:
         if root is None:
@@ -248,10 +261,10 @@ def constructInorderPreorder(
     if not preorder or not inorder:
         return None
 
-    rootValue = preorder[0]
-    root = TreeNode(rootValue)
+    rootValue: int = preorder[0]
+    root: TreeNode = TreeNode(rootValue)
 
-    mid = inorder.index(rootValue)
+    mid: int = inorder.index(rootValue)
 
     root.left = constructInorderPreorder(preorder[1 : mid + 1], inorder[:mid])
     root.right = constructInorderPreorder(preorder[mid + 1 :], inorder[mid + 1 :])
@@ -269,10 +282,10 @@ def constructInorderPostorder(
     if not postorder or not inorder:
         return None
 
-    rootValue = postorder[-1]
-    root = TreeNode(rootValue)
+    rootValue: int = postorder[-1]
+    root: TreeNode = TreeNode(rootValue)
 
-    mid = inorder.index(rootValue)
+    mid: int = inorder.index(rootValue)
 
     root.left = constructInorderPostorder(inorder[:mid], postorder[:mid])
     root.right = constructInorderPostorder(inorder[mid + 1 :], postorder[mid:-1])
@@ -280,15 +293,31 @@ def constructInorderPostorder(
     return root
 
 
-# TODO
 def constructFromPreorderAndPostorder(
     preorder: List[int], postorder: List[int]
 ) -> Optional[TreeNode]:
+    """LC 889. Build any matching tree from valid traversals of distinct values.
+
+    Input: preorder=[1,2,4,5,3,6,7], postorder=[4,5,2,6,7,3,1].
+    Output: [1,2,3,4,5,6,7]. A single child is placed on the left.
+    The tree need not be unique. O(n) time and O(h) stack space.
     """
-    Input: preorder = [1, 2, 4, 5, 3, 6, 7], postorder = [4, 5, 2, 6, 7, 3, 1]
-    Output: [1, 2, 3, 4, 5, 6, 7]
-    """
-    pass
+    if not preorder:
+        return None
+    root: TreeNode = TreeNode(preorder[0])
+    stack: list[TreeNode] = [root]
+    post_index: int = 0
+    for value in preorder[1:]:
+        while stack and stack[-1].val == postorder[post_index]:
+            stack.pop()
+            post_index += 1
+        node: TreeNode = TreeNode(value)
+        if stack[-1].left is None:
+            stack[-1].left = node
+        else:
+            stack[-1].right = node
+        stack.append(node)
+    return root
 
 
 class SerializeDeserialize:
@@ -314,19 +343,19 @@ class SerializeDeserialize:
         return ",".join(ans)
 
     def deserialize(self, data: str) -> Optional[TreeNode]:
-        preorderList = data.split(",")
-        i = 0
+        preorderList: list[str] = data.split(",")
+        i: int = 0
 
         def dfs() -> Optional[TreeNode]:
             nonlocal i
 
-            value = preorderList[i]
+            value: str = preorderList[i]
             i += 1
 
             if value == "None":
                 return None
 
-            root = TreeNode(int(value))
+            root: TreeNode = TreeNode(int(value))
 
             root.left = dfs()
             root.right = dfs()
@@ -336,15 +365,14 @@ class SerializeDeserialize:
         return dfs()
 
 
-# TODO
 def distanceK(root: TreeNode, target: TreeNode, k: int) -> List[int]:
     """
     Input: root = [3, 5, 1, 6, 2, 0, 8, None, None, 7, 4], target = 5, k = 2
     Output: [7, 4, 1]
     """
-    parent = {}
+    parent: dict[TreeNode, TreeNode] = {}
 
-    def dfs(node):
+    def dfs(node: TreeNode | None) -> None:
         if not node:
             return
 
@@ -359,16 +387,16 @@ def distanceK(root: TreeNode, target: TreeNode, k: int) -> List[int]:
 
     dfs(root)
 
-    queue = deque([target])
-    visited = {target}
-    distance = 0
+    queue: deque[TreeNode] = deque([target])
+    visited: set[TreeNode] = {target}
+    distance: int = 0
 
     while queue:
         if distance == k:
             return [node.val for node in queue]
 
         for _ in range(len(queue)):
-            node = queue.popleft()
+            node: TreeNode = queue.popleft()
 
             for neighbor in [node.left, node.right, parent.get(node)]:
                 if neighbor and neighbor not in visited:
@@ -385,7 +413,9 @@ def maxPathSum(root: Optional[TreeNode]) -> int:
     Input: root = [-10, 9, 20, None, None, 15, 7]
     Output: 42
     """
-    ans = float("-inf")
+    if root is None:
+        raise ValueError("maximum path sum requires a nonempty tree")
+    ans: int = root.val
 
     def dfs(root: Optional[TreeNode]) -> int:
         nonlocal ans
@@ -393,8 +423,8 @@ def maxPathSum(root: Optional[TreeNode]) -> int:
         if root is None:
             return 0
 
-        left = max(dfs(root.left), 0)
-        right = max(dfs(root.right), 0)
+        left: int = max(dfs(root.left), 0)
+        right: int = max(dfs(root.right), 0)
 
         ans = max(ans, left + right + root.val)
 
@@ -405,24 +435,27 @@ def maxPathSum(root: Optional[TreeNode]) -> int:
     return ans
 
 
-def findDuplicateSubtrees(root: TreeNode | None) -> list[TreeNode | None]:
+type Subtree = tuple[int, Subtree, Subtree] | None
+
+
+def findDuplicateSubtrees(root: TreeNode | None) -> list[TreeNode]:
     """
     Input: root = [1, 2, 3, 4, None, 2, 4, None, None, 4]
     Output: [2, 4]
     """
 
-    ans = []
+    ans: list[TreeNode] = []
 
-    freq = {}
+    freq: dict[Subtree, int] = {}
 
-    def dfs(root: TreeNode | None) -> tuple | None:
+    def dfs(root: TreeNode | None) -> Subtree:
         if root is None:
             return None
 
-        left_subtree = dfs(root.left)
-        right_subtree = dfs(root.right)
+        left_subtree: Subtree = dfs(root.left)
+        right_subtree: Subtree = dfs(root.right)
 
-        curr_subtree = (root.val, left_subtree, right_subtree)
+        curr_subtree: Subtree = (root.val, left_subtree, right_subtree)
 
         freq[curr_subtree] = freq.get(curr_subtree, 0) + 1
 
@@ -437,16 +470,23 @@ def findDuplicateSubtrees(root: TreeNode | None) -> list[TreeNode | None]:
 
 
 def mergeTwoBST(r1: TreeNode | None, r2: TreeNode | None) -> list[int]:
+    """Merge BST values in sorted order, preserving duplicates.
+
+    Input (level order): r1=[3,1,5], r2=[4,2,6]. Output: [1,2,3,4,5,6].
+    O(m+n) time and space including traversal arrays and output.
     """
-    Input: r1 = [1, 3, 5], r2 = [2, 4, 6]
-    Output: [1, 2, 3, 4, 5, 6]
-    """
-    arr1: list[int] = []
-    arr2: list[int] = []
-
-    inorder(r1, arr1)
-    inorder(r2, arr2)
-
-    # merge_two_sorted_arrays(arr1, arr2)
-
-    return arr1 + arr2
+    a: list[int]
+    b: list[int]
+    a, b = inorder(r1), inorder(r2)
+    result: list[int] = []
+    i: int
+    j: int
+    i = j = 0
+    while i < len(a) and j < len(b):
+        if a[i] <= b[j]:
+            result.append(a[i])
+            i += 1
+        else:
+            result.append(b[j])
+            j += 1
+    return result + a[i:] + b[j:]

@@ -5,7 +5,7 @@
 ![Focus: Cloud Engineering](https://img.shields.io/badge/Focus-Cloud_Engineering-2563eb?style=for-the-badge)
 ![Core Guides: 6](https://img.shields.io/badge/Core_Guides-6-16a34a?style=for-the-badge)
 ![Practical Questions: 160](https://img.shields.io/badge/Practical_Questions-160-f59e0b?style=for-the-badge)
-![DSA Topic Files: 13](https://img.shields.io/badge/DSA_Topic_Files-13-8b5cf6?style=for-the-badge)
+![DSA Topic Files: 14](https://img.shields.io/badge/DSA_Topic_Files-14-8b5cf6?style=for-the-badge)
 
 Learn the concepts, practise the commands, and explain the evidence behind your decisions. The guides use short definitions, examples, and troubleshooting scenarios; the DSA files support coding practice.
 
@@ -54,6 +54,8 @@ Open [the practical guide](Core/06_Practical_160_Questions.md) and use these que
 
 ## 🧩 Data structures & algorithms
 
+Start with the [Python interview guide](Python_Interview_Guide.md) for mutability, functions, `self`, `__init__`, dataclasses, decorators, generators, exceptions, typing, concurrency, and short practice questions.
+
 ![Language: Python](https://img.shields.io/badge/Language-Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![Practice: Explain • Solve • Verify](https://img.shields.io/badge/Practice-Explain%20%E2%80%A2%20Solve%20%E2%80%A2%20Verify-64748b?style=flat-square)
 
@@ -72,6 +74,9 @@ Open [the practical guide](Core/06_Practical_160_Questions.md) and use these que
 | 11 | [🧠 Dynamic Programming](DSA/11_Dynamic_Programming.py) | States, transitions, and reuse of subproblem results |
 | 12 | [🎯 Miscellaneous](DSA/12_Miscellaneous.py) | Additional problem-solving exercises |
 | 13 | [💡 Bit Manipulation](DSA/13_Bit.py) | Binary representation and bitwise operations |
+| 14 | [Stacks + Tries](DSA/14_Stacks_Tries.py) | Bracket validation, minimum stack, and prefix search |
+
+[DSA practice priorities and test instructions](DSA/README.md).
 
 [📋 Open the problem tracker](DSA/leetcode_progress.md) for the recorded problem list and completion status. Tracker status is not a correctness guarantee; check implementations and edge cases as you practise.
 

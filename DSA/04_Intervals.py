@@ -3,9 +3,9 @@ from typing import List, Tuple
 
 
 class Interval:
-    def __init__(self, start: int = 0, end: int = 0):
-        self.start = start
-        self.end = end
+    def __init__(self, start: int = 0, end: int = 0) -> None:
+        self.start: int = start
+        self.end: int = end
 
 
 def mergeIntervals(intervals: List[List[int]]) -> List[List[int]]:
@@ -32,6 +32,8 @@ def eraseOverlapIntervals(intervals: List[List[int]]) -> int:
     Output: 1
     """
     intervals.sort(key=lambda x: x[0])
+    if not intervals:
+        return 0
     ans: int = 0
     prevEnd: int = intervals[0][1]
 
@@ -103,6 +105,8 @@ def employeeFreeTime(schedule: List[List[List[int]]]) -> List[List[int]]:
             else:
                 all_intervals.append((interval[0], interval[1]))
 
+    if not all_intervals:
+        return []
     all_intervals.sort(key=lambda x: x[0])
 
     ans: List[List[int]] = []

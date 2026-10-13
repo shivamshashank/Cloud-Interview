@@ -2,19 +2,22 @@ from typing import List
 
 
 def find_plate(n: int) -> str:  # Example: n = 1_000_000
+    """Zero-based five-character plate: digits, then uppercase suffix letters."""
+    if n < 0:
+        raise ValueError("index must be nonnegative")
     for letter_count in range(6):  # Try 0, 1, 2, 3, 4, or 5 letters
 
-        digit_count = 5 - letter_count
+        digit_count: int = 5 - letter_count
         # letter_count = 0 → digit_count = 5
         # letter_count = 1 → digit_count = 4
         # letter_count = 2 → digit_count = 3
 
-        numbers_per_suffix = 10**digit_count
+        numbers_per_suffix: int = 10**digit_count
         # 5 digits → 10^5 = 100,000
         # 4 digits → 10^4 = 10,000
         # 3 digits → 10^3 = 1,000
 
-        group_size = numbers_per_suffix * (26**letter_count)
+        group_size: int = numbers_per_suffix * (26**letter_count)
         # 5 digits + 0 letters → 100,000 × 1   = 100,000
         # 4 digits + 1 letter  → 10,000 × 26  = 260,000
         # 3 digits + 2 letters → 1,000 × 676  = 676,000
@@ -30,21 +33,21 @@ def find_plate(n: int) -> str:  # Example: n = 1_000_000
 
             continue  # Move to the next plate format
 
-        number = n % numbers_per_suffix
+        number: int = n % numbers_per_suffix
         # 640,000 % 1,000 = 0
 
-        letter_value = n // numbers_per_suffix
+        letter_value: int = n // numbers_per_suffix
         # 640,000 // 1,000 = 640
 
         letters: List[str] = []  # We will build the letters here
 
         for _ in range(letter_count):  # Run 2 times because letter_count = 2
 
-            remainder = letter_value % 26
+            remainder: int = letter_value % 26
             # First iteration:  640 % 26 = 16
             # Second iteration: 24 % 26 = 24
 
-            letter = chr(ord("A") + remainder)
+            letter: str = chr(ord("A") + remainder)
             # 16 → Q because A=0, B=1, ..., Q=16
             # 24 → Y because A=0, B=1, ..., Y=24
 
@@ -59,13 +62,13 @@ def find_plate(n: int) -> str:  # Example: n = 1_000_000
         letters.reverse()
         # ["Q", "Y"] becomes ["Y", "Q"]
 
-        number_part = str(number).zfill(digit_count)
+        number_part: str = str(number).zfill(digit_count) if digit_count else ""
         # number = 0
         # str(number) = "0"
         # digit_count = 3
         # "0".zfill(3) = "000"
 
-        letter_part = "".join(letters)
+        letter_part: str = "".join(letters)
         # ["Y", "Q"] becomes "YQ"
 
         return number_part + letter_part
@@ -75,13 +78,15 @@ def find_plate(n: int) -> str:  # Example: n = 1_000_000
 
 
 def minimum_water(matrix: List[List[int]], a: int) -> float:  # Example: 4 × 4 matrix, a = 2
-    m = len(matrix)
+    if not matrix or not matrix[0] or not 1 <= a <= min(len(matrix), len(matrix[0])):
+        raise ValueError("a must fit inside a nonempty rectangular matrix")
+    m: int = len(matrix)
     # Number of rows = 4
 
-    n = len(matrix[0])
+    n: int = len(matrix[0])
     # Number of columns = 4
 
-    col_sums = [0] * n
+    col_sums: list[int] = [0] * n
     # Initially: [0, 0, 0, 0]
 
     # Add the first `a` rows
@@ -109,7 +114,7 @@ def minimum_water(matrix: List[List[int]], a: int) -> float:  # Example: 4 × 4 
         # top = 1: 12 + 12 = 24
         # top = 2: 16 + 14 = 30
 
-        answer: float = min(answer, current_sum)
+        answer = min(answer, current_sum)
         # top = 0: min(infinity, 10) = 10
         # top = 1: min(10, 24) = 10
         # top = 2: min(10, 30) = 10
@@ -135,7 +140,7 @@ def minimum_water(matrix: List[List[int]], a: int) -> float:  # Example: 4 × 4 
             # right = 2: 30 - 16 + 4 = 18
             # right = 3: 18 - 14 + 6 = 10
 
-            answer: float = min(answer, current_sum)
+            answer = min(answer, current_sum)
             # Keep the smallest sum found so far
 
         if top + a < m:

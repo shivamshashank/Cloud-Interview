@@ -7,11 +7,13 @@ def twoSum(nums: List[int], target: int) -> List[int]:
     Input: nums = [2, 7, 11, 15], target = 9
     Output: [1, 2]
     """
-    n = len(nums)
+    n: int = len(nums)
+    s: int
+    e: int
     s, e = 0, n - 1
 
-    while s <= e:
-        total = nums[s] + nums[e]
+    while s < e:
+        total: int = nums[s] + nums[e]
 
         if total > target:
             e -= 1
@@ -28,7 +30,9 @@ def removeDuplicates(nums: List[int]) -> int:
     Input: nums = [1, 1, 2]
     Output: 2
     """
-    write = 0
+    if not nums:
+        return 0
+    write: int = 0
 
     for i in range(1, len(nums)):
         if nums[i] != nums[write]:
@@ -44,7 +48,7 @@ def threeSum(nums: List[int]) -> List[List[int]]:
     Output: [[-1, -1, 2], [-1, 0, 1]]
     """
     nums.sort()
-    n = len(nums)
+    n: int = len(nums)
 
     ans: List[List[int]] = []
 
@@ -52,10 +56,12 @@ def threeSum(nums: List[int]) -> List[List[int]]:
         if i > 0 and nums[i] == nums[i - 1]:
             continue
 
+        s: int
+        e: int
         s, e = i + 1, n - 1
 
         while s < e:
-            total = nums[i] + nums[s] + nums[e]
+            total: int = nums[i] + nums[s] + nums[e]
 
             if total > 0:
                 e -= 1
@@ -80,7 +86,7 @@ def fourSum(nums: List[int], target: int) -> List[List[int]]:
     Output: [[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]]
     """
     nums.sort()
-    n = len(nums)
+    n: int = len(nums)
     
     ans: List[List[int]] = []
 
@@ -92,10 +98,12 @@ def fourSum(nums: List[int], target: int) -> List[List[int]]:
             if j > i + 1 and nums[j] == nums[j - 1]:
                 continue
 
+            s: int
+            e: int
             s, e = j + 1, n - 1
 
             while s < e:
-                total = nums[i] + nums[j] + nums[s] + nums[e]
+                total: int = nums[i] + nums[j] + nums[s] + nums[e]
 
                 if total > target:
                     e -= 1
@@ -123,8 +131,8 @@ def findMaxAverage(nums: List[int], k: int) -> float:
     ans: int = curr
 
     for i in range(k, len(nums)):
-        curr: int = curr + nums[i] - nums[i - k]
-        ans: int = max(ans, curr)
+        curr = curr + nums[i] - nums[i - k]
+        ans = max(ans, curr)
 
     return ans / k
 
@@ -144,7 +152,7 @@ def lengthOfLongestSubstring(s: str) -> int:
             left += 1
 
         seen.add(ch)
-        ans: int = max(ans, right - left + 1)
+        ans = max(ans, right - left + 1)
 
     return ans
 
@@ -165,7 +173,7 @@ def characterReplacement(s: str, k: int) -> int:
             freq[ord(s[l]) - ord("A")] -= 1
             l += 1
 
-        ans: int = max(ans, i - l + 1)
+        ans = max(ans, i - l + 1)
 
     return ans
 
@@ -204,11 +212,11 @@ def minWindow(s: str, t: str) -> str:
     if not s or not t:
         return ""
 
-    need = Counter(t)
-    missing = len(t)
-    start = 0
-    best_len = float("inf")
-    best_range = (0, 0)
+    need: Counter[str] = Counter(t)
+    missing: int = len(t)
+    start: int = 0
+    best_len: float = float("inf")
+    best_range: tuple[int, int] = (0, 0)
 
     for end, ch in enumerate(s):
         if need[ch] > 0:
@@ -240,9 +248,13 @@ def trap(height: List[int]) -> int:
     if not height:
         return 0
 
+    left: int
+    right: int
     left, right = 0, len(height) - 1
+    max_left: int
+    max_right: int
     max_left, max_right = height[left], height[right]
-    water = 0
+    water: int = 0
 
     while left < right:
         if max_left <= max_right:
@@ -255,3 +267,27 @@ def trap(height: List[int]) -> int:
             water += max_right - height[right]
 
     return water
+
+
+def sortColors(nums: List[int]) -> None:
+    """LC 75: Sort Colors (Medium).
+
+    Input: [2, 0, 2, 1, 1, 0]. Output (in place): [0, 0, 1, 1, 2, 2].
+    Values must be 0, 1, or 2. Dutch national flag: before low is 0,
+    [low, current) is 1, after high is 2; inspect [current, high].
+    Time: O(n). Extra space: O(1).
+    """
+    low: int
+    current: int
+    low = current = 0
+    high: int = len(nums) - 1
+    while current <= high:
+        if nums[current] == 0:
+            nums[low], nums[current] = nums[current], nums[low]
+            low += 1
+            current += 1
+        elif nums[current] == 2:
+            nums[current], nums[high] = nums[high], nums[current]
+            high -= 1  # Inspect the newly swapped-in value next.
+        else:
+            current += 1
